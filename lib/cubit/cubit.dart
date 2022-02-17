@@ -1,28 +1,68 @@
-import 'dart:convert';
-
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:newapp/cubit/dio.dart';
 import 'package:newapp/cubit/states.dart';
-import 'package:http/http.dart' as http;
-import 'package:newapp/models/article_model.dart';
-
+import 'package:newapp/view/screens/business.dart';
+import 'package:newapp/view/screens/science.dart';
+import 'package:newapp/view/screens/sports.dart';
 
 class NewsCubit extends Cubit<NewsStates>{
   NewsCubit() : super(InitialState());
-  static NewsCubit get(context)=> BlocProvider.of(context);
-  String? selectedCategory;
-  List<ArticleModel> data = [];
-Future<List<ArticleModel>> getData() async {
-  http.Response response = await http.get(Uri.parse('https://newsapi.org/v2/everything?q=tesla&from=2022-01-16&sortBy=publishedAt&apiKey=ff978dce03944637884fe011dd70db94'));
-  var body = json.decode(utf8.decode(response.bodyBytes));
+
+  static NewsCubit get(context) => BlocProvider.of(context);
 
 
-    var jsonResult =  body['articles'] as List;
-    
-  var data =
-  jsonResult.map((item) =>ArticleModel.fromJson(item)).toList();
-  
-  return data;
+
+
+  int currentIndex = 0;
+List<BottomNavigationBarItem> items = const[
+  BottomNavigationBarItem(
+    icon: Icon(
+      Icons.business,
+    ),
+    label: 'business',
+  ),
+  BottomNavigationBarItem(
+    icon: Icon(
+      Icons.science,
+    ),
+    label: 'science',
+  ),
+  BottomNavigationBarItem(
+    icon: Icon(
+      Icons.sports_baseball,
+    ),
+    label: 'sports',
+  ),
+];
+void changeNav(index){
+  currentIndex = index;
+  emit(ChangeNavBarState());
 }
 
 
+
+List<Widget> screens = [
+  const BusinessScreen(),
+  const ScienceScreen(),
+  const SportsScreen(),
+
+];
+
+List<Map> business =[];
+
+void getBusiness() {
+  DioHelper.getData(url: 'v2/top-headlines', query: {
+    'country': 'eg',
+    'category': 'business',
+    'apiKey': 'ff978dce03944637884fe011dd70db94',
+  }).then((value) {
+    print(value.data);
+    business = value.data['articles'];
+  }
+  ).catchError((error) {
+    print(error.toString());
+  });
+}
 }
