@@ -1,67 +1,69 @@
 import 'package:flutter/material.dart';
+import 'package:newapp/view/screens/web_view_screen.dart';
 
 
+// article here is a map from the whole list >>> I have a list of maps and I'm sending a map according to the index
+Widget buildArticleItem(article,context, {isSearch = false}){    // isSearch here is an optional parameter for calling this method in the search screen
+  return  InkWell(
+    onTap: (){
+      Navigator.push(context, MaterialPageRoute(builder: (context) {return WebViewScreen(article['url']);  }),);
+    },
+    child: Padding(
+      padding:  EdgeInsets.all(20.0),
+      child: Row(
+        children: [
+          Container(
+            width: 120,
+                height: 120,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+        image: DecorationImage(
+        fit: BoxFit.cover,
+          image: NetworkImage(
+            '${article['urlToImage']}'
 
-Widget buildArticleItem(article){
-  return  Padding(
-    padding:  EdgeInsets.all(16.0),
-    child: Row(
-      children: [
-        Image.network(
-        '${article['urlToImage'] ?? 'https://user-images.githubusercontent.com/24848110/33519396-7e56363c-d79d-11e7-969b-09782f5ccbab.png'}',
-          width: 120,
-
-          loadingBuilder: (BuildContext context, Widget child,
-              ImageChunkEvent? loadingProgress) {
-            if (loadingProgress == null) return child;
-            return Center(
-              child: CircularProgressIndicator(
-                value: loadingProgress.expectedTotalBytes != null
-                    ? loadingProgress.cumulativeBytesLoaded /
-                    loadingProgress.expectedTotalBytes!
-                    : null,
-              ),
-            );
-          },
-
-
-          errorBuilder: (context, exception, stackTrack) =>  Icon(Icons.error,
-          size: 120,
-          color: Colors.grey[500],),
-          height: 120,
-          fit: BoxFit.cover,
+          )
         ),
-        const SizedBox(
-          width: 20.0,
-        ),
-        Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '${article['title']}',
-                style: const TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w400,
 
                 ),
-                    maxLines: 4,
-                overflow: TextOverflow.ellipsis ,
-              ),
-              Text(
-                '${article['publishedAt']}',
-                style: const TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w400,
-                ),
 
-              ),
-            ],
+
+
           ),
-        ),
+          const SizedBox(
+            width: 20.0,
+          ),
+            Expanded(
+              child: Container(
+             //   height: 120.0,
+                child: Column(
 
-      ],
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+
+                      '${article['title']}',
+                      style: Theme.of(context).textTheme.bodyText1,
+                          maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      '${article['publishedAt']}',
+                      style: const TextStyle(
+                        fontSize: 17.0,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.grey,
+                      ),
+
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+        ],
+      ),
     ),
   );
 }

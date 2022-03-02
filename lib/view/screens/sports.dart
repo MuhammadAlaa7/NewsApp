@@ -21,7 +21,7 @@ class SportsScreen extends StatelessWidget {
 
               return ListView.separated(
                   physics: const BouncingScrollPhysics(),
-                  itemBuilder:(context,index)=> buildArticleItem(list[index]) ,
+                  itemBuilder:(context,index)=> buildArticleItem(list[index],context) ,
                   separatorBuilder: (context,index)=>  Container(width: double.infinity,
                       height: 1.0,color: Colors.grey[400],
                       margin:const EdgeInsets.only(left: 30)) ,

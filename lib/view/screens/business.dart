@@ -23,7 +23,7 @@ class BusinessScreen extends StatelessWidget {
 
               return ListView.separated(
                 physics: const BouncingScrollPhysics(),
-                  itemBuilder:(context,index)=> buildArticleItem(list[index]) , /// list of index means a map here
+                  itemBuilder:(context,index)=> buildArticleItem(list[index],context) , /// list of index means a map here
                   separatorBuilder: (context,index)=>  Container(width: double.infinity,
                     height: 1.0,color: Colors.grey[400],
                   margin:const EdgeInsets.only(left: 20)) ,
